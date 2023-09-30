@@ -1,0 +1,43 @@
+version: "3.8"
+services:
+
+    mongodb:
+        image: mongo:5.0.2
+        restart: unless-stopped
+        env_file: ./.env
+        environment:
+          - MONGO_INITDB_ROOT_USERNAME=$DB_USER
+          - MONGO_INITDB_ROOT_PASSWORD=$DB_PASSWORD
+        ports:
+          - $DB_PORT:$DB_DOCKER_PORT
+        volumes:
+          - db-data:/data/db
+
+    online_books_api:
+        build: .
+        container_name: online_books_api
+        ports:
+          - $NODE_APP_PORT:$NODE_APP_PORT
+        env_file: ./.env
+        environment:
+            - DB_HOST=mongodb
+            - DB_USER=$DB_USER
+            - DB_PASSWORD=$DB_PASSWORD
+            - DB_NAME=$DB_NAME
+            - DB_PORT=$DB_DOCKER_PORT
+        restart: unless-stopped
+        depends_on:
+            - mongodb
+        stdin_open: true
+        tty: true
+
+networks:
+    dev:
+        # driver: bridge
+        # ipam:
+        #     config:
+        #        - subnet: 10.5.0.0/16
+        #          gateway: 10.5.0.1
+
+volumes:
+    db-data:
