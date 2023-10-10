@@ -16,6 +16,7 @@ services:
     online_books_api:
         build: .
         container_name: online_books_api
+        command: npm run start:dev
         ports:
           - $NODE_APP_PORT:$NODE_APP_PORT
         env_file: ./.env
@@ -24,8 +25,11 @@ services:
             - DB_USER=$DB_USER
             - DB_PASSWORD=$DB_PASSWORD
             - DB_NAME=$DB_NAME
-            - DB_PORT=$DB_DOCKER_PORT
+            - DB_PORT=$DB_PORT
         restart: unless-stopped
+        volumes:
+          - ./:/usr/src/app
+          - nodemodules:/usr/src/app/src/node_modules
         depends_on:
             - mongodb
         stdin_open: true
@@ -41,3 +45,4 @@ networks:
 
 volumes:
     db-data:
+    nodemodules: {}

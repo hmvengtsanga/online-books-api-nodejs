@@ -1,10 +1,13 @@
 const express =  require("express");
 const cors =  require("cors");
-const HandleErrors = require('./utils/error-handler.util')
+const HandleErrors = require('./utils/error-handler.util');
+const dbConnect = require('./config/db-connect');
 
 require("dotenv").config();
 
 const PORT = process.env.NODE_APP_PORT || 8080;
+
+dbConnect();
 
 const app = express();
 

@@ -1,5 +1,6 @@
 
 const UserRepository = require("../repository/user.repository");
+const userCreationValidate = require("../validators/user-creation.validator");
 const { GeneratePassword, GenerateSalt, GenerateSignature, ValidatePassword } = require('../utils/auth.util');
 
 class UserService {
@@ -8,9 +9,11 @@ class UserService {
         this.repository = new UserRepository();
     }
 
-    async createUser(user) {
+    async createUser({ firstname, lastname, email, password }) {
 
-        const { firstname, lastname, email, password } = user;
+        const errors = userCreationValidate({ firstname, lastname, email, password });
+
+        if(errors) throw new Error(errors);
         
         try {
             let salt = await GenerateSalt();
@@ -20,7 +23,7 @@ class UserService {
 
             return newUser;
         } catch(err){
-            throw new Error(err.message);
+            throw new Error(err);
         }
     }
 
