@@ -8,8 +8,8 @@ module.exports.createUser = async (req, res) => {
 
     const data = await service.createUser({firstname, lastname, email, password});
 
-     return res.json(data);
+    return res.json(data);
   } catch (err) {
-    res.status(400).json(err);
+    res.status(400).json({ error: err.message});
   }
 };

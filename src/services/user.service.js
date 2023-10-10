@@ -1,6 +1,6 @@
 
 const UserRepository = require("../repository/user.repository");
-const userCreationValidate = require("../validators/user-creation.validator");
+const { userCreationValidate } = require("../validators/user-creation.validator");
 const { GeneratePassword, GenerateSalt, GenerateSignature, ValidatePassword } = require('../utils/auth.util');
 
 class UserService {
